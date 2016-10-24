@@ -61,11 +61,11 @@ function public_paths = configDTPathsPublic()
 
   error(nargchk(0, 0, nargin, 'struct'));
 
-  public_paths.netcdf_l0   = '/path/to/public/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/netcdf/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l0.nc';
-  public_paths.netcdf_l1   = '/path/to/public/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/netcdf/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l1.nc';
-  public_paths.netcdf_l2   = '/path/to/public/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/netcdf/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l2.nc';
-  public_paths.figure_dir  = '/path/to/public/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/figures';
-  public_paths.figure_url  = 'http://myserver/url/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/figures';
-  public_paths.figure_info = 'http://myserver/url/to/delayed_time/glider_data/figures/${DEPLOYMENT_ID}.json';
+  public_paths.netcdf_l0   = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/public/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l0.nc';
+  public_paths.netcdf_l1   = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/public/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l1.nc';
+  public_paths.netcdf_l2   = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/public/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l2.nc';
+%   public_paths.figure_dir  = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/public';
+%   public_paths.figure_url  = 'http://myserver/url/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/figures';
+%   public_paths.figure_info = 'http://myserver/url/to/delayed_time/glider_data/figures/${DEPLOYMENT_ID}.json';
 
 end

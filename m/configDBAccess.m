@@ -42,10 +42,10 @@ function db_access = configDBAccess()
 
   error(nargchk(0, 0, nargin, 'struct'));
 
-  db_access.server = 'jdbc:postgresql://mydb.myportal.mydomain:5433/my_data_base';
-  db_access.name = 'my_data_base';
-  db_access.user = 'myself';
-  db_access.pass = 'top_secret';
+  db_access.server = 'jdbc:postgresql://localhost:5432/slocum';
+  db_access.name = 'slocum';
+  db_access.user = 'slocum';
+  db_access.pass = 'plankton';
   db_access.driver = 'org.postgresql.Driver';
 
 end

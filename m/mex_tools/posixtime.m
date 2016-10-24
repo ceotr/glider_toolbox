@@ -52,8 +52,9 @@ function t = posixtime()
   if ISOCTAVE
     t = time();
   else
-    error('glider_toolbox:posixtime:MissingMexFile', ...
-          'Missing required mex file.');
+    t = java.lang.System.currentTimeMillis / 1000;
+%     error('glider_toolbox:posixtime:MissingMexFile', ...
+%           'Missing required mex file.');
   end
 
 end

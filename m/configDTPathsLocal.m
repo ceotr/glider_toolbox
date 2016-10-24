@@ -56,14 +56,14 @@ function local_paths = configDTPathsLocal()
 
   error(nargchk(0, 0, nargin, 'struct'));
 
-  local_paths.binary_path    = '/path/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/binary';
-  local_paths.cache_path     = '/path/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/binary';
-  local_paths.log_path       = '/path/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/log';
-  local_paths.ascii_path     = '/path/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/ascii';
-  local_paths.figure_path    = '/path/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/figures';
-  local_paths.netcdf_l0      = '/path/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/netcdf/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l0.nc';
-  local_paths.netcdf_l1      = '/path/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/netcdf/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l1.nc';
-  local_paths.netcdf_l2      = '/path/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/netcdf/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l2.nc';
-  local_paths.processing_log = '/path/to/delayed_time/glider_data/${GLIDER_NAME}/${DEPLOYMENT_START,Tyyyymmdd}/processing.log';
+  local_paths.binary_path    = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/raw';
+  local_paths.cache_path     = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/raw';
+  local_paths.log_path       = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/mlgnlg';
+  local_paths.ascii_path     = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/ascii';
+  local_paths.figure_path    = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/figures';
+  local_paths.netcdf_l0      = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/netcdf/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l0.nc';
+  local_paths.netcdf_l1      = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/netcdf/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l1.nc';
+  local_paths.netcdf_l2      = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/netcdf/${GLIDER_NAME}_${DEPLOYMENT_START,Tyyyymmdd}_l2.nc';
+  local_paths.processing_log = '/Users/brad/Documents/slocum_glider/slocum_data/full_res/data/processing.log';
 
 end
