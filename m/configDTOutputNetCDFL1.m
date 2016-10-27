@@ -428,7 +428,7 @@ function ncl1_info = configDTOutputNetCDFL1()
   var_attr_list.backscatter_470 = {
     'long_name'     'blue backscattering'
     'standard_name' 'blue_backscattering'
-    'units'         '1'
+    'units'         'm^{-1} sr^{-1}'
     'coordinates'   'time depth latitude longitude'
     '_FillValue'    default_fill_value
     'sources'                [] };
@@ -436,7 +436,7 @@ function ncl1_info = configDTOutputNetCDFL1()
   var_attr_list.backscatter_532 = {
     'long_name'     'green backscattering'
     'standard_name' 'green_backscattering'
-    'units'         '1'
+    'units'         'm^{-1} sr^{-1}'
     'coordinates'   'time depth latitude longitude'
     '_FillValue'    default_fill_value
     'sources'                [] };
@@ -444,7 +444,7 @@ function ncl1_info = configDTOutputNetCDFL1()
   var_attr_list.backscatter_660 = {
     'long_name'     'red backscattering'
     'standard_name' 'red_backscattering'
-    'units'         '1'
+    'units'         'm^{-1} sr^{-1}'
     'coordinates'   'time depth latitude longitude'
     '_FillValue'    default_fill_value
     'sources'                [] };
@@ -452,7 +452,15 @@ function ncl1_info = configDTOutputNetCDFL1()
   var_attr_list.backscatter_700 = {
     'long_name'     '700 nm wavelength backscatter'
     'standard_name' '700nm_backscatter'
-    'units'         '1'
+    'units'         'm^{-1} sr^{-1}'
+    'coordinates'   'time depth latitude longitude'
+    '_FillValue'    default_fill_value
+    'sources'                [] };
+
+  var_attr_list.backscatter_880 = {
+    'long_name'     '880 nm wavelength backscatter'
+    'standard_name' '800nm_backscatter'
+    'units'         'm^{-1} sr^{-1}'
     'coordinates'   'time depth latitude longitude'
     '_FillValue'    default_fill_value
     'sources'                [] };
@@ -599,8 +607,24 @@ function ncl1_info = configDTOutputNetCDFL1()
     '_FillValue'    default_fill_value
     'sources'                [] };
 
+  var_attr_list.irradiance_489 = {
+    'long_name'     'irradiance at 489nm wavelength'
+    'standard_name' 'downwelling_spectral_spherical_irradiance_in_sea_water'
+    'units'         'uW cm-2 nm-1'
+    'coordinates'   'time depth latitude longitude'
+    '_FillValue'    default_fill_value
+    'sources'                [] };
+
   var_attr_list.irradiance_491 = {
     'long_name'     'irradiance at 491nm wavelength'
+    'standard_name' 'downwelling_spectral_spherical_irradiance_in_sea_water'
+    'units'         'uW cm-2 nm-1'
+    'coordinates'   'time depth latitude longitude'
+    '_FillValue'    default_fill_value
+    'sources'                [] };
+
+  var_attr_list.irradiance_555 = {
+    'long_name'     'irradiance at 555nm wavelength'
     'standard_name' 'downwelling_spectral_spherical_irradiance_in_sea_water'
     'units'         'uW cm-2 nm-1'
     'coordinates'   'time depth latitude longitude'

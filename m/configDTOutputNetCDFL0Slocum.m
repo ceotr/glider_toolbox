@@ -637,6 +637,39 @@ function ncl0_info = configDTOutputNetCDFL0Slocum()
     'units'         '1'
     '_FillValue'    default_fill_value };
 
+  % BB2FLS sensor.
+  var_attr_list.sci_bb2fls_cdom_scaled = {
+    'long_name'     'CDOM'
+    'units'         'ppb'
+    '_FillValue'    default_fill_value };
+
+  var_attr_list.sci_bb2fls_b660_scaled = {
+    'long_name'     'red backscattering'
+    'units'         'm^{-1} sr^{-1}'
+    '_FillValue'    default_fill_value };
+
+  var_attr_list.sci_bb2fls_b880_scaled = {
+    'long_name'     '880nm backscattering'
+    'units'         'm^{-1} sr^{-1}'
+    '_FillValue'    default_fill_value };
+
+  % BB2FLSV2 sensor.
+  var_attr_list.sci_bb2flsv2_chl_scaled = {
+    'long_name'     'chlorophyll'
+    'standard_name' 'concentration_of_chlorophyll_in_sea_water'
+    'units'         'mg m-3'
+    '_FillValue'    default_fill_value };
+
+  var_attr_list.sci_bb2flsv2_b470_scaled = {
+    'long_name'     'blue backscattering'
+    'units'         'm^{-1} sr^{-1}'
+    '_FillValue'    default_fill_value };
+
+  var_attr_list.sci_bb2flsv2_b532_scaled = {
+    'long_name'     'green backscattering'
+    'units'         'm^{-1} sr^{-1}'
+    '_FillValue'    default_fill_value };
+
   % OCR504I sensor.
   var_attr_list.sci_ocr504I_irrad1 = {
     'long_name'     'irradiance at 412nm wavelength'

@@ -6,7 +6,7 @@ function preprocessing_options = configDataPreprocessingSlocum()
 %
 %  Description:
 %    PREPROCESSING_OPTIONS = CONFIGDATAPREPROCESSINGSLOCUM() should return a
-%    struct setting the options for Slocum glider data preprocessing as needed 
+%    struct setting the options for Slocum glider data preprocessing as needed
 %    by the function PREPROCESSGLIDERDATA.
 %
 %  Examples:
@@ -36,12 +36,12 @@ function preprocessing_options = configDataPreprocessingSlocum()
 %  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   error(nargchk(0, 0, nargin, 'struct'));
-  
+
   preprocessing_options = struct();
-  
+
   preprocessing_options.time_list(1).time = 'm_present_time';
   preprocessing_options.time_list(2).time = 'sci_m_present_time';
-  
+
   preprocessing_options.position_list(1).longitude = 'm_gps_lon';
   preprocessing_options.position_list(1).latitude  = 'm_gps_lat';
   preprocessing_options.position_list(1).conversion = @nmea2deg;
@@ -50,27 +50,27 @@ function preprocessing_options = configDataPreprocessingSlocum()
   preprocessing_options.position_list(2).longitude = 'm_lon';
   preprocessing_options.position_list(2).latitude  = 'm_lat';
   preprocessing_options.position_list(2).conversion = @nmea2deg;
-  
+
   preprocessing_options.depth_list.depth = 'm_depth';
-  
+
   preprocessing_options.attitude_list(1).roll = 'm_roll';
   preprocessing_options.attitude_list(1).pitch = 'm_pitch';
-  
+
   preprocessing_options.heading_list.heading = 'm_heading';
 
   preprocessing_options.waypoint_list(1).longitude = 'c_wpt_lon';
   preprocessing_options.waypoint_list(1).latitude = 'c_wpt_lat';
   preprocessing_options.waypoint_list(1).conversion = @nmea2deg;
-  
+
   preprocessing_options.water_velocity_list(1).velocity_eastward  = 'm_final_water_vx';
   preprocessing_options.water_velocity_list(1).velocity_northward = 'm_final_water_vy';
-  
+
   preprocessing_options.ctd_list(1).conductivity = 'sci_water_cond';
   preprocessing_options.ctd_list(1).temperature  = 'sci_water_temp';
   preprocessing_options.ctd_list(1).pressure     = 'sci_water_pressure';
   preprocessing_options.ctd_list(1).time         = 'sci_ctd41cp_timestamp';
   preprocessing_options.ctd_list(1).pressure_conversion = @bar2dbar;
-  
+
   preprocessing_options.ctd_list(2).conductivity = 'm_water_cond';
   preprocessing_options.ctd_list(2).temperature  = 'm_water_temp';
   preprocessing_options.ctd_list(2).pressure     = 'm_water_pressure';
@@ -81,13 +81,36 @@ function preprocessing_options = configDataPreprocessingSlocum()
   preprocessing_options.oxygen_list(1).oxygen_saturation    = 'sci_oxy3835_saturation';
   preprocessing_options.oxygen_list(1).temperature          = 'sci_oxy3835_temp';
   preprocessing_options.oxygen_list(1).time                 = 'sci_oxy3835_timestamp';
-  
-  preprocessing_options.optics_list(1).chlorophyll = 'sci_flntu_chlor_units';
-  preprocessing_options.optics_list(1).turbidity   = 'sci_flntu_turb_units';
-  preprocessing_options.optics_list(1).temperature = 'sci_flntu_temp';
-  preprocessing_options.optics_list(1).time        = 'sci_flntu_timestamp';
-  
-  preprocessing_options.extra_sensor_list = struct();
-    
-end
 
+  % preprocessing_options.optics_list(1).chlorophyll = 'sci_flntu_chlor_units';
+  % preprocessing_options.optics_list(1).turbidity   = 'sci_flntu_turb_units';
+  % preprocessing_options.optics_list(1).temperature = 'sci_flntu_temp';
+  % preprocessing_options.optics_list(1).time        = 'sci_flntu_timestamp';
+  preprocessing_options.optics_list(1).chlorophyll = 'sci_bb2flsv2_chl_scaled';
+  preprocessing_options.optics_list(1).cdom        = 'sci_bb2fls_cdom_scaled';
+  preprocessing_options.optics_list(1).turbidity   = [];
+  preprocessing_options.optics_list(1).temperature = [];
+  preprocessing_options.optics_list(1).time        = [];
+
+  % Backscattering sensors from the fluorometers that don't fit into the optics yet
+%   preprocessing_options.extra_sensor_list(1).chlorophyll     = 'sci_bb2flsv2_chl_scaled';
+%   preprocessing_options.extra_sensor_list(1).cdom            = 'sci_bb2fls_cdom_scaled';
+  preprocessing_options.extra_sensor_list(1).extra_optics.backscatter_470 = 'sci_bb2flsv2_b470_scaled';
+  preprocessing_options.extra_sensor_list(1).extra_optics.backscatter_532 = 'sci_bb2flsv2_b532_scaled';
+  preprocessing_options.extra_sensor_list(1).extra_optics.backscatter_660 = 'sci_bb2fls_b660_scaled';
+  preprocessing_options.extra_sensor_list(1).extra_optics.backscatter_880 = 'sci_bb2fls_b880_scaled';
+  % Downwelling irradiance sensors that don't fit elsewhere
+  preprocessing_options.extra_sensor_list(1).irradiance.irradiance_412 = 'sci_ocr504i_irrad1';
+  preprocessing_options.extra_sensor_list(1).irradiance.irradiance_442 = 'sci_ocr504i_irrad2';
+  preprocessing_options.extra_sensor_list(1).irradiance.irradiance_489 = 'sci_ocr504i_irrad3';
+  preprocessing_options.extra_sensor_list(1).irradiance.irradiance_555 = 'sci_ocr504i_irrad4';
+  % Diagnostic stuff
+  preprocessing_options.extra_sensor_list(1).diagnostic.battery_voltage            = 'm_battery';
+  preprocessing_options.extra_sensor_list(1).diagnostic.leakdetect_voltage_forward = 'm_leakdetect_voltage_forward';
+  preprocessing_options.extra_sensor_list(1).diagnostic.leakdetect_voltage_aft     = 'm_leakdetect_voltage';
+  preprocessing_options.extra_sensor_list(1).diagnostic.vacuum_pressure            = 'm_vacuum';
+  preprocessing_options.extra_sensor_list(1).diagnostic.amp_hours                  = 'm_coulomb_amphr';
+  preprocessing_options.extra_sensor_list(1).diagnostic.amp_hours_total            = 'm_coulomb_amphr_total';
+
+
+end

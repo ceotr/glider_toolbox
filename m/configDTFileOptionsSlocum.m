@@ -5,8 +5,8 @@ function slocum_options = configDTFileOptionsSlocum()
 %    SLOCUM_OPTIONS = CONFIGDTFILEOPTIONSSLOCUM()
 %
 %  Description:
-%    SLOCUM_OPTIONS = CONFIGDTFILEOPTIONSSLOCUM() should return a struct 
-%    with the parameters that control which are the deployment files, 
+%    SLOCUM_OPTIONS = CONFIGDTFILEOPTIONSSLOCUM() should return a struct
+%    with the parameters that control which are the deployment files,
 %    whether they need to be converted, and which files and data should be used
 %    in delayed time mode. The returned struct should have the following fields:
 %      FORMAT_CONVERSION: boolean specifying whether data is in binary files
@@ -18,9 +18,9 @@ function slocum_options = configDTFileOptionsSlocum()
 %        this pattern and the replacement string in next field.
 %      DBA_NAME_REPLACEMENT: string with the name pattern replacement to use
 %        when converting binary files to ascii.
-%      DBA_NAME_PATTERN_NAV: string with the name pattern of navigation ascii 
+%      DBA_NAME_PATTERN_NAV: string with the name pattern of navigation ascii
 %        files to be loaded for processing by function LOADSLOCUMDATA.
-%        The name of an ascii file should match this pattern to be loaded 
+%        The name of an ascii file should match this pattern to be loaded
 %        as a navigation file.
 %      DBA_NAME_PATTERN_SCI: string with the name pattern of science ascii
 %        files to be loaded for processing by function LOADSLOCUMDATA.
@@ -62,33 +62,33 @@ function slocum_options = configDTFileOptionsSlocum()
 %  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   error(nargchk(0, 0, nargin, 'struct'));
-  
+
   % Binary file conversion to text format
   % (disable it when reprocessing deployments with no new binary data):
   slocum_options.format_conversion = true;
-  
+
   % All binary files, renamed or not:
   % slocum_options.xbd_name_pattern = '^(.*)\.([smdtne]bd)$';
   % Already renamed binary files of all sizes:
   slocum_options.xbd_name_pattern = '^(\w+-\d{4}-\d+-\d+-\d+)\.([smdtne]bd)$';
-  
+
   % xbd to dba name replacement:
   slocum_options.dba_name_replace = '$1-$2.dba';
-  
+
   % Navigation files to use (restrict the character set if needed):
   % slocum_options.dba_name_pattern_nav = '^.*-[smd]bd\.dba$';
   slocum_options.dba_name_pattern_nav = '^.*-dbd\.dba$';
-  
+
   % Science files to use: (restrict the character set if needed):
   % slocum_options.dba_name_pattern_sci = '^.*-[tne]bd\.dba$';
   slocum_options.dba_name_pattern_sci = '^.*-ebd\.dba$';
-  
+
   % Time sensor column in navigation files:
   slocum_options.dba_time_sensor_nav = 'm_present_time';
-  
+
   % Time sensor column in science files:
   slocum_options.dba_time_sensor_sci = 'sci_m_present_time';
-  
+
   % Sensors to load:
   slocum_options.dba_sensors = {
     'm_present_time'
@@ -110,14 +110,31 @@ function slocum_options = configDTFileOptionsSlocum()
     'sci_water_pressure'
     'sci_water_cond'
     'sci_water_temp'
-    'sci_flntu_chlor_units'
-    'sci_flntu_turb_units'
-    'sci_flntu_temp'
-    'sci_flntu_timestamp'
+    % 'sci_flntu_chlor_units'
+    % 'sci_flntu_turb_units'
+    % 'sci_flntu_temp'
+    % 'sci_flntu_timestamp'
+    'sci_bb2flsv2_chl_scaled'
+    'sci_bb2fls_cdom_scaled';
+    'sci_bb2flsv2_b470_scaled'
+    'sci_bb2flsv2_b532_scaled'
+    'sci_bb2fls_b660_scaled'
+    'sci_bb2fls_b880_scaled'
     'sci_oxy3835_oxygen'
     'sci_oxy3835_saturation'
     'sci_oxy3835_temp'
     'sci_oxy3835_timestamp'
+    'sci_ocr504i_irrad1'
+    'sci_ocr504i_irrad2'
+    'sci_ocr504i_irrad3'
+    'sci_ocr504i_irrad4'
+    'm_battery'
+    'm_leakdetect_voltage_forward'
+    'm_leakdetect_voltage'
+    'm_vacuum'
+    'm_coulomb_amphr'
+    'm_coulomb_amphr_total'
+    'm_science_clothesline_lag'
   };
-  
+
 end

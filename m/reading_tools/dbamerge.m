@@ -10,7 +10,7 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
 %    [META, DATA] = DBAMERGE(META_NAV, DATA_NAV, META_SCI, DATA_SCI) merges the
 %    navigation and science data sets described by metadata structs META_NAV and
 %    META_SCI, and data arrays DATA_NAV and DATA_SCI into a single data set
-%    described by metadata struct META and data array or struct DATA 
+%    described by metadata struct META and data array or struct DATA
 %    (see format option described below). Input metadata and data should be
 %    in the format returned by the function DBACAT. Sensor cycles from both
 %    data sets are merged based on the order of the respective timestamps.
@@ -47,7 +47,7 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
 %        Two element numeric array with the start and the end of the period
 %        of interest (seconds since 1970-01-01 00:0:00.00 UTC). If given,
 %        only sensor cycles with timestamps within this period will be present
-%        in output. The string 'all' may also be given, in which case time 
+%        in output. The string 'all' may also be given, in which case time
 %        filtering is not performed and all sensors cycles in the input
 %        data sets will be present in output.
 %        Default value: 'all' (do not perform time filtering).
@@ -58,7 +58,7 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
 %    instead).
 %
 %    The function is designed after the programs provided by WRC 'dba_merge',
-%    'dba_sensor_filter' and 'dba_time_filter'. Since these programs are not 
+%    'dba_sensor_filter' and 'dba_time_filter'. Since these programs are not
 %    well documented, specially 'dba_merge', and the source code is not
 %    available, it is coded after some reverse engineering and its behaviour
 %    only asserted for compatibility with original 'dba_merge' program through
@@ -106,16 +106,16 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
 %  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   error(nargchk(4, 14, nargin, 'struct'));
-  
-  
+
+
   %% Set options and default values.
   options.format = 'array';
   options.timenav = 'm_present_time';
   options.timesci = 'sci_m_present_time';
   options.sensors = 'all';
   options.period = 'all';
-  
-  
+
+
   %% Parse optional arguments.
   % Get option key-value pairs in any accepted call signature.
   argopts = varargin;
@@ -143,8 +143,8 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
             'Invalid option: %s.', opt);
     end
   end
-  
-  
+
+
   %% Set option flags and values.
   output_format = lower(options.format);
   time_sensor_nav = options.timenav;
@@ -159,15 +159,15 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
   if ischar(options.period) && strcmp(options.period, 'all')
     time_filtering = false;
   end
-  
-  
+
+
   %% Merge data and metadata checking for empty input cases.
   if isempty(meta_sci.sources) && isempty(meta_nav.sources)
     % No input data.
     % Both META_NAV and DATA_NAV, and META_SCI and DATA_SCI
     % are equal to the trivial output of DBACAT.
     % Disable filtering.
-    meta = meta_nav; 
+    meta = meta_nav;
     data = data_nav;
     sensor_filtering = false;
     time_filtering = false;
@@ -207,7 +207,7 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
     meta.sensors = vertcat(sensors_nav, sensors_sci);
     meta.units = vertcat(units_nav, units_sci);
     meta.bytes = vertcat(bytes_nav, bytes_sci);
-    
+
     % Merge data.
     % Check that both data sets have their own timestamp sensor.
     [time_sensor_nav_present, time_sensor_nav_col] = ...
@@ -224,16 +224,28 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
             'Missing timestamp sensor in science data set: %s.', ...
             time_sensor_sci);
     end
-    
+    [time_sensor_nav_sci_present, time_sensor_nav_sci_col] = ...
+      ismember(strcat('gld_dup_', time_sensor_sci), sensors_nav);
+    if ~time_sensor_nav_sci_present
+      error('glider_toolbox:dbamerge:MissingTimestamp', ...
+            'Missing timestamp sensor in flight data set: %s.', ...
+            strcat('gld_dup_', time_sensor_sci));
+    end
+
     % Build list of unique timestamps and output index of each sensor cycle.
     stamp_nav = data_nav(:, time_sensor_nav_col);
+    stamp_nav_sci = data_nav(:, time_sensor_nav_sci_col);
     stamp_sci = data_sci(:, time_sensor_sci_col);
+
     [stamp_merged, ~, stamp_merged_indices_to] = ...
-      unique(vertcat(stamp_nav, stamp_sci));
-    
-    % Build merged data array with sensor columns horizontally concatenated 
+    unique(vertcat(stamp_nav_sci, stamp_sci));
+
+%     [stamp_sci_merged, ~, ~] = ...
+%     unique(vertcat(stamp_nav_sci, stamp_sci));
+
+    % Build merged data array with sensor columns horizontally concatenated
     % and different sensor cycles verticaly interleaved according to timestamp.
-    row_num_nav = numel(stamp_nav);
+    row_num_nav = numel(stamp_nav_sci);
     row_range_nav = (1:row_num_nav);
     row_num_sci = numel(stamp_sci);
     row_range_sci = row_num_nav + (1:row_num_sci);
@@ -246,18 +258,67 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
     data = nan(row_num_merged, col_num_merged);
     data(stamp_merged_indices_to(row_range_nav), col_range_nav) = data_nav;
     data(stamp_merged_indices_to(row_range_sci), col_range_sci) = data_sci;
-    
+
+    % Apply clothesline lag correction
+    [lag_sensor_nav_present, lag_sensor_nav_col] = ...
+      ismember('m_science_clothesline_lag', meta.sensors);
+    if ~lag_sensor_nav_present
+      error('glider_toolbox:dbamerge:MissingLag', ...
+            'Missing lag sensor in navigation data set: %s.', ...
+            'm_science_clothesline_lag');
+    end
+    [time_sensor_nav_sci_present, time_sensor_nav_sci_col] = ...
+      ismember(time_sensor_sci, meta.sensors);
+    if ~time_sensor_nav_sci_present
+      error('glider_toolbox:dbamerge:MissingLag', ...
+            'Missing timestamp sensor in navigation data set: %s.', ...
+            time_sensor_sci);
+    end
+    [time_sensor_nav_present, time_sensor_nav_col] = ...
+      ismember(time_sensor_nav, meta.sensors);
+    if ~time_sensor_nav_present
+      error('glider_toolbox:dbamerge:MissingLag', ...
+            'Missing timestamp sensor in navigation data set: %s.', ...
+            time_sensor_nav);
+    end
+    [time_sensor_sci_present, time_sensor_sci_col] = ...
+      ismember(time_sensor_sci, meta.sensors);
+    if ~time_sensor_sci_present
+      error('glider_toolbox:dbamerge:MissingLag', ...
+            'Missing timestamp sensor in navigation data set: %s.', ...
+            time_sensor_nav);
+    end
+
+    stamp_nav = data(stamp_merged_indices_to(row_range_nav), time_sensor_nav_col);
+    lag_nav = data(stamp_merged_indices_to(row_range_nav), lag_sensor_nav_col);
+    stamp_nav_sci = data(stamp_merged_indices_to(row_range_nav), time_sensor_nav_sci_col);
+    real_offset = (stamp_nav_sci + lag_nav) - stamp_nav;
+    median_real_offset = median(real_offset(~isnan(real_offset)));
+
+    % Interpolate a corrected science timestamp for every flight timestamp
+    lag_corrected = stamp_nav_sci + lag_nav;
+    x = lag_corrected(~isnan(lag_corrected));
+    y = stamp_nav(~isnan(lag_corrected));
+    xq = stamp_merged;
+
+    reliable_times = interp1(x, y, xq);
+
+    data(:, time_sensor_nav_col) = reliable_times;
+
     % Fill missing navigation timestamp values with science timestamp values.
     % This is done to mimic the behaviour of the WRC program 'dba_merge'.
-    stamp_nav_invalid = isnan(data(:, time_sensor_nav_col));
-    data(stamp_nav_invalid, time_sensor_nav_col) = ...
-      data(stamp_nav_invalid, col_num_nav + time_sensor_sci_col);
-    
+    % stamp_nav_invalid = isnan(data(:, time_sensor_nav_col));
+    % data(stamp_nav_invalid, time_sensor_nav_col) = ...
+    %   data(stamp_nav_invalid, col_num_nav + time_sensor_sci_col);
+
+
+
+
     % Unique timestamp to be used for time filtering.
     time_sensor_merged = time_sensor_nav;
   end
-  
-  
+
+
   %% Perform time filtering if needed.
   if time_filtering
     [time_sensor_merged_present, time_sensor_merged_col] = ...
@@ -272,8 +333,8 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
       ~(stamp_merged < time_range(1) | stamp_merged > time_range(2));
     data = data(stamp_select, :);
   end
-  
-  
+
+
   %% Perform sensor filtering if needed.
   if sensor_filtering
     [sensor_select, ~] = ismember(meta.sensors, sensor_list);
@@ -282,8 +343,8 @@ function [meta, data] = dbamerge(meta_nav, data_nav, meta_sci, data_sci, varargi
     meta.bytes = meta.bytes(sensor_select);
     data = data(:, sensor_select);
   end
-  
-  
+
+
   %% Convert output data to struct format if needed.
   switch output_format
     case 'array'
